@@ -21,6 +21,8 @@ let y_scale = d3.scaleLinear()
     .range([height, 0]);
 let g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//j1
 let j1 = d3.line()
     .x((d) => {
     return x_scale(Date.parse(d.time));
@@ -28,14 +30,48 @@ let j1 = d3.line()
     .y((d) => {
     return y_scale(d.joints[0]);
     });
+//j2
+let j2 = d3.line()
+    .x((d) => {
+    return x_scale(Date.parse(d.time));
+    })
+    .y((d) => {
+    return y_scale(d.joints[1]);
+    });
+//j3
+let j3 = d3.line()
+    .x((d) => {
+    return x_scale(Date.parse(d.time));
+    })
+    .y((d) => {
+    return y_scale(d.joints[2]);
+    });
+
    g.append("g").attr("class", "axis x");
    g.append("g").attr("class", "axis y");
+
+   //j1
    g.append("path")
     .datum(joint_datas)
     .attr("class", "j1")
     .attr("d", j1)
     .style('fill', 'none')
     .style('stroke', '#00F');
+    //j2
+    g.append("path")
+    .datum(joint_datas)
+    .attr("class", "j2")
+    .attr("d", j2)
+    .style('fill', 'none')
+    .style('stroke', '#F00');
+    //j3
+    g.append("path")
+    .datum(joint_datas)
+    .attr("class", "j3")
+    .attr("d", j3)
+    .style('fill', 'none')
+    .style('stroke', '#0F0');
+
 const resize = () => {
     width = window.innerWidth - margin.left - margin.right
     height = window.innerHeight - margin.top - margin.bottom;
@@ -59,13 +95,21 @@ const update_chart = () => {
     g.select("g.axis.y")
         .attr("class", "axis y")
         .call(d3.axisLeft(y_scale));
+    //j1
     svg.select(".j1") // change the line
         .attr("d", j1(joint_datas));
+    //j2
+    svg.select(".j2") // change the line
+        .attr("d", j2(joint_datas));
+    //j3
+    svg.select(".j3") // change the line
+        .attr("d", j3(joint_datas));
 };
 
 
 
-//
+
+
 
 const mqtt_client = mqtt.connect('wss://mqtt-broker-tt.herokuapp.com');
 
